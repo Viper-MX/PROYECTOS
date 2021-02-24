@@ -95,10 +95,6 @@ if [[ $readvalue = @(b|B) ]]; then
  done
 elif [[ $readvalue = @(x|X) ]]; then
 # GERADOR KEYS
-clear
-echo -e "$BARRA"
-echo -e "\033[0;31mGENERADOR DE KEYS\033[0m"
-echo -e "$BARRA"
 read -p "KEY DE ACTUALIZACIÓN?: [Y/N]: " -e -i n attGEN
 [[ $(echo $nombrevalue|grep -w "FIXA") ]] && nombrevalue+=[GERADOR]
  for arqx in `ls $SCPT_DIR`; do
@@ -300,7 +296,7 @@ echo -e "$BARRA"
 read -p "Enter"
 }
 atualizar_geb () {
-wget -O $HOME/instger.sh https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/PROYECTOS_DESCONTINUADOS/master/GENERADOR-VPS-MX/instgerador.sh &>/dev/null
+wget -O $HOME/instger.sh https://www.dropbox.com/s/ekopy6w7zry9rfb/matrix.sh &>/dev/null
 chmod +x $HOME/instger.sh
 cd $HOME
 ./instger.sh
