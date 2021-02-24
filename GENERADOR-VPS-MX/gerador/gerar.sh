@@ -95,6 +95,10 @@ if [[ $readvalue = @(b|B) ]]; then
  done
 elif [[ $readvalue = @(x|X) ]]; then
 # GERADOR KEYS
+clear
+echo -e "$BARRA"
+echo -e "\033[0;31mGENERADOR DE KEYS\033[0m"
+echo -e "$BARRA"
 read -p "KEY DE ACTUALIZACIÓN?: [Y/N]: " -e -i n attGEN
 [[ $(echo $nombrevalue|grep -w "FIXA") ]] && nombrevalue+=[GERADOR]
  for arqx in `ls $SCPT_DIR`; do
