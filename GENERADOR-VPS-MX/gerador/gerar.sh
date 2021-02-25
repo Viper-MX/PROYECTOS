@@ -156,7 +156,7 @@ obfus=$(echo $txtofus | rev)
 txt_ofuscatw=$(echo $txtofus | rev)
 unset varq
 }
-
+ofuscate_fun "${IP}:8888"
 new_key () {
 echo -ne "Nome do Dono da Key (nombre/name): "; read name
 echo -ne "Quantidade Keys (number):"; read num
