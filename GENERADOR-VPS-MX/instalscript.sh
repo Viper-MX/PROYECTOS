@@ -51,7 +51,7 @@ if [ ! -d "$INSTALL_DIR" ]; then
     wget https://raw.githubusercontent.com/Viper-MX/PROYECTOS/master/GENERADOR-VPS-MX/Install/zzupdate.sh -O /usr/local/vpsmxup/vpsmxup.sh &> /dev/null
 	chmod +x /usr/local/vpsmxup/vpsmxup.sh
 	rm -rf /usr/bin/vpsmxup
-    wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/PROYECTOS_DESCONTINUADOS/master/GENERADOR-VPS-MX/Install/zzupdate.sh -O /usr/bin/vpsmxup &> /dev/null
+    wget https://raw.githubusercontent.com/Viper-MX/PROYECTOS/master/GENERADOR-VPS-MX/Install/zzupdate.sh -O /usr/bin/vpsmxup &> /dev/null
 	chmod +x /usr/bin/vpsmxup
 	echo -e  "\033[1;97m              Copiando Instalador Interno "
 	
