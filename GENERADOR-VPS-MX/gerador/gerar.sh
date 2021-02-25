@@ -120,6 +120,9 @@ fi
 rm ${SCPT_DIR}/*.x.c &> /dev/null
 echo "$nombrevalue" > ${DIR}/${KEY}.name
 [[ ! -z $IPFIX ]] && echo "$IPFIX" > ${DIR}/${KEY}/keyfixa
+echo -e "$BARRA"
+echo -e "Key Activa, y Esperando Instalacion!"
+echo -e "$BARRA"
 }
 
 ofus () {
@@ -150,12 +153,13 @@ gerar_key () {
 valuekey="$(date | md5sum | head -c10)"
 valuekey+="$(echo $(($RANDOM*10))|head -c 5)"
 fun_list "$valuekey"
-echo -e "Cuantas vas a Generar (number):"; read num
+echo -ne "Quantidade Keys (number):"; read num
+echo -e "GENERANDO..."
 for((k=0; k<$num; k++)); do
-arch="$(ofus "$IP:8888/$valuekey/$LIST")"
-echo "$arch"
+echo "$nombrevalue" > ${DIR}/${KEY}.name
+echo "ofus "$IP:8888/$valuekey/$LIST""
 done
-echo -e "GENERADAS..."
+echo -e "${amarelo}GERADAS..."
 read -p "Enter para Finalizar"
 }
 att_gen_key () {
