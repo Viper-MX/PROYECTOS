@@ -254,7 +254,7 @@ for((i=1; i<$number+1; i++)); do
 txt[$i]=$(echo "$1" | cut -b $i)
 case ${txt[$i]} in
 ".")txt[$i]="#";;
-"+")txt[$i]=".";;
+"#")txt[$i]=".";;
 "1")txt[$i]="@";;
 "@")txt[$i]="1";;
 "2")txt[$i]="?";;
