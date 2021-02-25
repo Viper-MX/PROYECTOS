@@ -154,8 +154,11 @@ valuekey="$(date | md5sum | head -c10)"
 valuekey+="$(echo $(($RANDOM*10))|head -c 5)"
 fun_list "$valuekey"
 keyfinal=$(ofus "$IP:8888/$valuekey/$LIST")
-echo -e "KEY: $keyfinal\nGenerada Con Exito!"
-echo -e "$BARRA"
+for i in {1..10}
+do
+    echo "$i.- $keyfinal"
+done
+
 read -p "Enter para Finalizar"
 }
 att_gen_key () {
