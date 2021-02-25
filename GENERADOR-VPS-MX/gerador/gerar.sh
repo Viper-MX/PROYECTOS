@@ -150,7 +150,7 @@ gerar_key () {
 valuekey="$(date | md5sum | head -c10)"
 valuekey+="$(echo $(($RANDOM*10))|head -c 5)"
 fun_list "$valuekey"
-echo -e "Quantidade Keys (number):"; read num
+echo -e "Cuantas vas a Generar (number):"; read num
 for((k=0; k<$num; k++)); do
 arch="$(ofus "$IP:8888/$valuekey/$LIST")"
 echo "$arch"
