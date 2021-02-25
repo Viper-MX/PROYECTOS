@@ -120,9 +120,6 @@ fi
 rm ${SCPT_DIR}/*.x.c &> /dev/null
 echo "$nombrevalue" > ${DIR}/${KEY}.name
 [[ ! -z $IPFIX ]] && echo "$IPFIX" > ${DIR}/${KEY}/keyfixa
-echo -e "$BARRA"
-echo -e "Key Activa, y Esperando Instalacion!"
-echo -e "$BARRA"
 }
 
 ofus () {
@@ -158,7 +155,8 @@ for((k=0; k<$num; k++)); do
 arch="$(ofus "$IP:8888/$valuekey/$LIST")"
 echo "$arch"
 done
-echo -e "GERADAS..."
+echo -e "GENERADAS..."
+read -p "Enter para Finalizar"
 }
 att_gen_key () {
 i=0
