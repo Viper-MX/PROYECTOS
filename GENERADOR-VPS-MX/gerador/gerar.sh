@@ -125,41 +125,58 @@ echo -e "Key Activa, y Esperando Instalacion!"
 echo -e "$BARRA"
 }
 
-ofus () {
-unset server
-server=$(echo ${txt_ofuscatw}|cut -d':' -f1)
-unset txtofus
+
+ofuscate_fun () {
 number=$(expr length $1)
-for((i=1; i<$number+1; i++)); do
+for((i=1; i<$(($number+1)); i++)); do
 txt[$i]=$(echo "$1" | cut -b $i)
-case ${txt[$i]} in
-".")txt[$i]="#";;
-"#")txt[$i]=".";;
-"1")txt[$i]="@";;
-"@")txt[$i]="1";;
-"2")txt[$i]="?";;
-"?")txt[$i]="2";;
-"3")txt[$i]="&";;
-"&")txt[$i]="3";;
-"-")txt[$i]="K";;
-"K")txt[$i]="-";;
-esac
+if [ "${txt[$i]}" = "." ]; then
+txt[$i]="#"
+elif [ "${txt[$i]}" = "#" ]; then
+txt[$i]="."
+fi
+if [ "${txt[$i]}" = "1" ]; then
+txt[$i]="@"
+elif [ "${txt[$i]}" = "@" ]; then
+txt[$i]="1"
+fi
+if [ "${txt[$i]}" = "2" ]; then
+txt[$i]="?"
+elif [ "${txt[$i]}" = "?" ]; then
+txt[$i]="2"
+fi
+if [ "${txt[$i]}" = "3" ]; then
+txt[$i]="&"
+elif [ "${txt[$i]}" = "&" ]; then
+txt[$i]="3"
+fi
 txtofus+="${txt[$i]}"
 done
-echo "$txtofus" | rev
+obfus=$(echo $txtofus | rev)
+txt_ofuscatw=$(echo $txtofus | rev)
+unset varq
+}
+
+new_key () {
+echo -ne "Nome do Dono da Key (nombre/name): "; read name
+echo -ne "Quantidade Keys (number):"; read num
+echo -e "GENERANDO..."
+for((k=0; k<$num; k++)); do
+arch="$((100*$RANDOM*$RANDOM+$RANDOM))"
+echo "$name" > ${DIR}/${arch}
+echo "${obfus}+${arch}"
+done
+echo -e "GERADAS..."
+read -p "Enter para Finalizar"
 }
 
 gerar_key () {
 valuekey="$(date | md5sum | head -c10)"
 valuekey+="$(echo $(($RANDOM*10))|head -c 5)"
 fun_list "$valuekey"
-echo -ne "Quantidade Keys (number):"; read num
-echo -e "GENERANDO..."
-for((k=0; k<$num; k++)); do
-echo "$nombrevalue" > ${DIR}/${KEY}.name
-echo "ofus "$IP:8888/$valuekey/$LIST""
-done
-echo -e "${amarelo}GERADAS..."
+keyfinal=$(ofus "$IP:8888/$valuekey/$LIST")
+echo -e "KEY: $keyfinal\nGenerada Con Exito!"
+echo -e "$BARRA"
 read -p "Enter para Finalizar"
 }
 att_gen_key () {
@@ -330,7 +347,7 @@ echo -e "$BARRA"
 if [[ ${varread} = 0 ]]; then
 exit
 elif [[ ${varread} = 1 ]]; then
-gerar_key
+new_key
 elif [[ ${varread} = 2 ]]; then
 remover_key
 elif [[ ${varread} = 3 ]]; then
