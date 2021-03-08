@@ -124,50 +124,73 @@ echo -e "$BARRA"
 echo -e "Key Activa, y Esperando Instalacion!"
 echo -e "$BARRA"
 }
+list_fix () {
+rm ${SCPT_DIR}/*.x.c &> /dev/null
+unset KEY
+KEY="$1"
+#CRIA DIR
+[[ ! -e ${DIR} ]] && mkdir ${DIR}
+#ENVIA ARQS
+i=0
+VALUE+="gerar.sh instgerador.sh http-server.py $BASICINST"
+for arqx in `ls ${SCPT_DIR}`; do
+[[ $(echo $VALUE|grep -w "${arqx}") ]] && continue 
+echo -e "[$i] -> ${arqx}"
+arq_list[$i]="${arqx}"
+let i++
+done
+#CRIA KEY
+[[ ! -e ${DIR}/${KEY} ]] && mkdir ${DIR}/${KEY}
+#PASSA ARQS
+nms+="$(echo $(($RANDOM*-5))|head -c 5)"
+[[ -z $readvalue ]] && readvalue="1"
+[[ -z $nombrevalue ]] && nombrevalue="$nomkey$nms"
+if [[ $readvalue = @(cgh|1) ]]; then
+#ADM BASIC
+ arqslist="$BASICINST"
+ for arqx in `echo "${arqslist}"`; do
+ [[ -e ${DIR}/${KEY}/$arqx ]] && continue #ANULA ARQUIVO CASO EXISTA
+ cp ${SCPT_DIR}/$arqx ${DIR}/${KEY}/
+ echo "$arqx" >> ${DIR}/${KEY}/${LIST}
+ done
+else
+ for arqx in `echo "${readvalue}"`; do
+ #UNE ARQ
+ [[ -e ${DIR}/${KEY}/${arq_list[$arqx]} ]] && continue #ANULA ARQUIVO CASO EXISTA
+ rm ${SCPT_DIR}/*.x.c &> /dev/null
+ cp ${SCPT_DIR}/${arq_list[$arqx]} ${DIR}/${KEY}/
+ echo "${arq_list[$arqx]}" >> ${DIR}/${KEY}/${LIST}
+ done
+echo "TRUE" >> ${DIR}/${KEY}/FERRAMENTA
+fi
+rm ${SCPT_DIR}/*.x.c &> /dev/null
+echo "$nombrevalue" > ${DIR}/${KEY}.name
+[[ ! -z $IPFIX ]] && echo "$IPFIX" > ${DIR}/${KEY}/keyfixa
+echo -e "-------------------------------------------------"
+}
 
-
-ofuscate_fun () {
+ofus () {
+unset server
+server=$(echo ${txt_ofuscatw}|cut -d':' -f1)
+unset txtofus
 number=$(expr length $1)
-for((i=1; i<$(($number+1)); i++)); do
+for((i=1; i<$number+1; i++)); do
 txt[$i]=$(echo "$1" | cut -b $i)
-if [ "${txt[$i]}" = "." ]; then
-txt[$i]="#"
-elif [ "${txt[$i]}" = "#" ]; then
-txt[$i]="."
-fi
-if [ "${txt[$i]}" = "1" ]; then
-txt[$i]="@"
-elif [ "${txt[$i]}" = "@" ]; then
-txt[$i]="1"
-fi
-if [ "${txt[$i]}" = "2" ]; then
-txt[$i]="?"
-elif [ "${txt[$i]}" = "?" ]; then
-txt[$i]="2"
-fi
-if [ "${txt[$i]}" = "3" ]; then
-txt[$i]="&"
-elif [ "${txt[$i]}" = "&" ]; then
-txt[$i]="3"
-fi
+case ${txt[$i]} in
+".")txt[$i]="#";;
+"#")txt[$i]=".";;
+"1")txt[$i]="@";;
+"@")txt[$i]="1";;
+"2")txt[$i]="?";;
+"?")txt[$i]="2";;
+"3")txt[$i]="&";;
+"&")txt[$i]="3";;
+"-")txt[$i]="K";;
+"K")txt[$i]="-";;
+esac
 txtofus+="${txt[$i]}"
 done
-obfus=$(echo $txtofus | rev)
-txt_ofuscatw=$(echo $txtofus | rev)
-unset varq
-}
-ofuscate_fun "${IP}:8888"
-new_key () {
-echo -ne "Nome do Dono da Key (nombre/name): "; read name
-echo -ne "Quantidade Keys (number):"; read num
-echo -e "GENERANDO..."
-for((k=0; k<$num; k++)); do
-arch="$((100*$RANDOM*$RANDOM+$RANDOM))"
-echo "$name" > ${DIR}/${arch}
-echo "${obfus}+${arch}"
-done
-echo -e "GERADAS..."
-read -p "Enter para Finalizar"
+echo "$txtofus" | rev
 }
 
 gerar_key () {
@@ -179,6 +202,26 @@ echo -e "KEY: $keyfinal\nGenerada Con Exito!"
 echo -e "$BARRA"
 read -p "Enter para Finalizar"
 }
+
+gen_key() {
+echo " Bienvenido, Porfavor dijita el Nombre del DUEÑO de la KEYs"
+read -p "Nombre del Dueño de las Keys : " nomkey
+echo " Bienvenido, Porfavor ingresa el numero de keys a generar"
+read -p "Numero de Keys : " numk
+echo -e "$BARRA"
+echo -e "Keys activas, y esperando instalación!"
+for((w=0; w<$numk; w++)); do
+valuekey="$(date | md5sum | head -c10)"
+valuekey+="$(echo $(($RANDOM*10))|head -c 5)"
+list_fix "$valuekey"
+keyfinal=$(ofus "$IP:8888/$valuekey/$LIST")
+echo -e "KEY $w : $keyfinal\n Generada Con Exito!"
+echo -e "$BARRA"
+done
+read -p "Enter para Finalizar"
+}
+
+
 att_gen_key () {
 i=0
 rm ${SCPT_DIR}/*.x.c &> /dev/null
@@ -338,16 +381,17 @@ echo -e "[5] = ENCENDER/APAGAR GENERADOR $PID_GEN\033[0m"
 echo -e "[6] = VER REGISTRO"
 echo -e "[7] = CAMBIAR CREDITOS"
 echo -e "[8] = ACTUALIZAR GENERADOR"
+echo -e "[9] = Generar Varias KEYS"
 echo -e "[0] = SALIR"
 echo -e "$BARRA"
-while [[ ${varread} != @([0-8]) ]]; do
+while [[ ${varread} != @([0-9]) ]]; do
 read -p "Opcion: " varread
 done
 echo -e "$BARRA"
 if [[ ${varread} = 0 ]]; then
 exit
 elif [[ ${varread} = 1 ]]; then
-new_key
+gerar_key
 elif [[ ${varread} = 2 ]]; then
 remover_key
 elif [[ ${varread} = 3 ]]; then
@@ -364,5 +408,7 @@ elif [[ ${varread} = 7 ]]; then
 message_gen
 elif [[ ${varread} = 8 ]]; then
 atualizar_geb
+elif [[ ${varread} = 9 ]]; then
+gen_key
 fi
 /usr/bin/gerar.sh
